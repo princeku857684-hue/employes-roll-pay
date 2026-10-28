@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- 1. Modern Split-Screen Login Section -->
+    <div id="login-section" class="login-wrapper animate-fade-in">
+        <div class="login-card animate-slide-up">
+            <!-- Left Form Side -->
+            <div class="login-form-side">
+                <div class="brand-header">
+                    <div class="logo-icon animate-bounce"><i class="fa-solid fa-users"></i></div>
+                    <h2>Employee Payroll</h2>
+                    <p class="sub-title">MANAGEMENT SYSTEM</p>
+                </div>
+                <p class="login-instruction">Login to your account</p>
+
+                <form id="login-form">
+                    <div class="input-group">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" checked> Remember Me
+                        </label>
+                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" id="login-btn" class="login-btn">
+                        <span id="btn-text">Login <i class="fa-solid fa-arrow-right"></i></span>
+                        <span id="btn-loader" class="loader" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <div class="divider"><span>OR</span></div>
+                <div class="admin-access">
+                    <i class="fa-solid fa-shield-halved"></i> Admin Access Only
+                </div>
+            </div>
+
+            <!-- Right Image/Banner Side -->
+            <div class="login-banner-side">
+                <div class="banner-content">
+                    <h3>WELCOME TO</h3>
+                    <h1>Employee Payroll<br>Management System</h1>
+                    
+                    <ul class="banner-features">
+                        <li><i class="fa-solid fa-users-gear"></i> Manage Employees</li>
+                        <li><i class="fa-solid fa-file-invoice-dollar"></i> Process Salaries</li>
+                        <li><i class="fa-solid fa-chart-column"></i> Generate Reports</li>
+                    </ul>
+
+                    <p class="quote">“Simplify Payroll, Empower People”</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Dashboard Section -->
+    <div id="dashboard-section" class="dashboard-container animate-fade-in" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar animate-slide-right">
+            <h2>Payroll System</h2>
+            <ul>
+                <li class="active"><i class="fa-solid fa-house"></i> Dashboard</li>
+                <li><i class="fa-solid fa-user-group"></i> Employees</li>
+                <li><i class="fa-solid fa-calculator"></i> Payroll</li>
+                <li><i class="fa-solid fa-file-lines"></i> Payslip</li>
+                <li id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="animate-slide-down">
+                <h2>Dashboard / Home Page</h2>
+                <span id="admin-name"><i class="fa-solid fa-user-shield"></i> Welcome, Prince Kumar</span>
+            </header>
+
+            <!-- Summary Cards -->
+            <div class="cards">
+                <div class="card animate-card">
+                    <h3>Total Employees</h3>
+                    <p id="total-emp">0</p>
+                </div>
+                <div class="card animate-card">
+                    <h3>Total Payroll</h3>
+                    <p>₹<span id="total-payroll">0</span></p>
+                </div>
+            </div>
+
+            <!-- Employee & Payroll Form -->
+            <section class="form-section animate-slide-up">
+                <h3>Employee Management & Payroll Calculation</h3>
+                <form id="payroll-form">
+                    <input type="text" id="emp-name" placeholder="Employee Name" required>
+                    <input type="text" id="emp-id" placeholder="Employee ID" required>
+                    <input type="text" id="emp-dept" placeholder="Department (e.g. IT, HR)" required>
+                    <input type="number" id="base-salary" placeholder="Base Salary (₹)" required>
+                    <input type="number" id="allowance" placeholder="Allowance / Bonus (₹)" required>
+                    <input type="number" id="deduction" placeholder="Deductions / Tax (₹)" required>
+                    <button type="submit">Save & Calculate</button>
+                </form>
+            </section>
+
+            <!-- Employee Table -->
+            <section class="table-section animate-slide-up">
+                <h3>Employee List & Payroll Details</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Dept</th>
+                                <th>Base</th>
+                                <th>Allowance</th>
+                                <th>Deduction</th>
+                                <th>Net Salary</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employee-table-body">
+                            <!-- Dynamic Data -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 3. Payslip Modal -->
+    <div id="payslip-modal" class="modal">
+        <div class="modal-content animate-zoom">
+            <span class="close-btn" onclick="closePayslip()">&times;</span>
+            <div id="payslip-print-area">
+                <h2>COMPANY PAYSLIP</h2>
+                <hr>
+                <div class="payslip-details">
+                    <p><strong>Employee ID:</strong> <span id="slip-id"></span></p>
+                    <p><strong>Employee Name:</strong> <span id="slip-name"></span></p>
+                    <p><strong>Department:</strong> <span id="slip-dept"></span></p>
+                </div>
+                <table class="payslip-table">
+                    <tr>
+                        <th>Earnings / Allowances</th>
+                        <th>Amount (₹)</th>
+                    </tr>
+                    <tr>
+                        <td>Basic Salary</td>
+                        <td id="slip-base">0</td>
+                    </tr>
+                    <tr>
+                        <td>Allowance / Bonus</td>
+                        <td id="slip-allowance">0</td>
+                    </tr>
+                    <tr>
+                        <th>Deductions</th>
+                        <th>Amount (₹)</th>
+                    </tr>
+                    <tr>
+                        <td>Tax / PF Deductions</td>
+                        <td id="slip-deduction">0</td>
+                    </tr>
+                    <tr class="total-row">
+                        <th>Net Salary Payable</th>
+                        <th id="slip-net">0</th>
+                    </tr>
+                </table>
+            </div>
+            <button class="print-btn" onclick="window.print()">Print Payslip</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
